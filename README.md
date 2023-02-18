@@ -41,4 +41,4 @@ See license.txt for details.
 
 ### Map window:
 
-![Map Window Screenshot](./img/map-window-screenshot.png "Map Window")
+![Map Window Screenshot](./img/map-window-screenshot.PNG "Map Window")
