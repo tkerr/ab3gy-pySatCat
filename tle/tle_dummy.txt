@@ -1,0 +1,2 @@
+Dummy file to force git to create the tle file directory.
+TLE (Two Line Element) files will be located here when downloaded from the pySatCat application.
