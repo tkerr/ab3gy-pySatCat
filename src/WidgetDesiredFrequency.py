@@ -49,7 +49,7 @@ from tkinter import ttk
 
 # Local packages.
 import globals
-from pySatCatUtils import *
+from src.pySatCatUtils import *
 
 
 ##############################################################################

@@ -52,10 +52,10 @@ from tkinter import ttk
 
 # Local packages.
 import globals
-from pySatCatUtils import *
+from src.pySatCatUtils import *
+from src.PresetConfiguration import PresetConfiguration
+from src.RigCat import CTCSS_TONES
 from PyRigCat.PyRigCat import OperatingMode
-from PresetConfiguration import PresetConfiguration
-from RigCat import CTCSS_TONES
 
 ##############################################################################
 # Globals.

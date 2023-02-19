@@ -1,9 +1,9 @@
 ###############################################################################
-# WidgetCatControl.py
+# WidgetPassWindow.py
 # Author: Tom Kerr AB3GY
 #
-# WidgetCatControl class for use with the pySatCat application.
-# Provides Computer Aided Transceiver (CAT) control through the GUI.
+# WidgetPassWindow class for use with the pySatCat application.
+# Provides a text window for displaying a table of satellite pass info.
 #
 # Designed for personal use by the author, but available to anyone under the
 # license terms below.
@@ -41,6 +41,8 @@
 ###############################################################################
 
 # System level packages.
+import ephem
+from datetime import datetime, timedelta
 
 # Tkinter packages.
 import tkinter as tk
@@ -49,7 +51,8 @@ from tkinter import ttk
 
 # Local packages.
 import globals
-from pySatCatUtils import *
+from src.pySatCatUtils import *
+
 
 ##############################################################################
 # Globals.
@@ -62,12 +65,12 @@ from pySatCatUtils import *
 
     
 ##############################################################################
-# WidgetCatControl class.
+# WidgetPassWindow class.
 ##############################################################################
-class WidgetCatControl(object):
+class WidgetPassWindow(object):
     """
-    WidgetCatControl class for use with the pySatCat application.
-    Provides Computer Aided Transceiver (CAT) control through the GUI.
+    WidgetPassWindow class for use with the pySatCat application.
+    Provides a text window for displaying a table of satellite pass info.
     """
     # ------------------------------------------------------------------------
     def __init__(self, parent):
@@ -84,110 +87,110 @@ class WidgetCatControl(object):
         None.
         """
         self.parent = parent
-        self.frame = tk.Frame(parent,
-            highlightbackground="blue",
-            highlightthickness=2)
+        self.frame = None
         
-        self.is_enabled = False
-        self.rig_label_text = tk.StringVar(self.frame)
-        self.comm_status_text = tk.StringVar(self.frame)
-        self.cat_enable = tk.IntVar(self.frame)
-
-        self.PADX = 6
-        self.PADY = 3
-        self.RIG_NONE = 'NONE'
+        self.PAD = '  '  # Column spacing pad
+        self.SWIDTH = 10 # Satellite name max width
+        self.DWIDTH = 10 # Date column width
+        self.TWIDTH = 8  # Time column width
+        self.EWIDTH = 6  # Max elevation column width
+        
+        self.SFMT = '{:<' + str(self.SWIDTH) + '}' # Satellite name format string
+        self.DFMT = '{:<' + str(self.DWIDTH) + '}' # Date format string
+        self.TFMT = '{:<' + str(self.TWIDTH) + '}' # Time format string
+        self.EFMT = '{:<' + str(self.EWIDTH) + '}' # Max elevation format string
+        
+        self.TITLE = self.SFMT.format('Satellite') + self.PAD \
+            + self.DFMT.format('AOS Date') + self.PAD \
+            + self.TFMT.format('AOS Time') + self.PAD \
+            + self.EFMT.format('Max El') + self.PAD \
+            + self.TFMT.format('LOS Time') + self.PAD \
+            + self.TFMT.format('View Time') + '\n'
         
         self._widget_init()
-   
-    # ------------------------------------------------------------------------
-    def set_comm_status(self, state=False):
-        """
-        Set the CAT communication status.
-        """
-        msg = 'Comm: NOT CONNECTED'
-        if self.is_enabled:
-            if state:
-                msg = 'Comm: CONNECTED    '
-        self.comm_status_text.set(msg)
 
     # ------------------------------------------------------------------------
-    def set_rig_name(self, name=None):
+    def clear(self):
         """
-        Set the rig name.
+        Clear all text from the window.
         """
-        if name is None: name = self.RIG_NONE
-        self.rig_label_text.set('Rig: ' + str(name))
-
+        self.frame.delete('1.0', tk.END)
+    
     # ------------------------------------------------------------------------
-    def _enable_ckbx_handler(self):
+    def add_pass_info(self, sat_name, aos_time, max_el, los_time):
         """
-        Event handler for Enable/Disable checkbox.
+        Add a satellite pass info row.
         """
-        state = self.cat_enable.get()
-        if (state == 0):
-            self.is_enabled = False
-            globals.rig_cat_enabled = False
-        else:
-            self.is_enabled = True
-            globals.rig_cat_enabled = True
-
+        name = self.SFMT.format(sat_name[:self.SWIDTH])  # Pad to width
+        
+        at = aos_time.datetime()
+        aos_date_str = self.DFMT.format(at.strftime('%Y-%m-%d'))
+        aos_time_str = self.TFMT.format(at.strftime('%H:%M:%S'))
+        max_el_str = self.EFMT.format(('%0.1f' % max_el))
+        lt = los_time.datetime()
+        los_time_str = self.TFMT.format(lt.strftime('%H:%M:%S'))
+        
+        # Compute total time in view.
+        tt = lt - at
+        hours = int(tt.seconds / 3600)
+        remain = tt.seconds - (hours * 3600)
+        minutes = int(remain / 60)
+        remain -= (minutes * 60)
+        seconds = remain
+        tot_time_str = ('%02d:' % hours) \
+            + ('%02d:' % minutes) \
+            + ('%02d' % seconds)
+        
+        
+        info = name + self.PAD \
+            + aos_date_str + self.PAD \
+            + aos_time_str + self.PAD \
+            + max_el_str + self.PAD \
+            + los_time_str + self.PAD \
+            + tot_time_str + '\n'
+        self.frame.insert(tk.INSERT, info)
+    
+    # ------------------------------------------------------------------------
+    def init_title(self):
+        """
+        Clear all text from the window and print the title row.
+        """
+        self.clear()
+        self.frame.insert('1.1', self.TITLE)
+  
     # ------------------------------------------------------------------------
     def _widget_init(self):
         """
         Internal method to create and initialize the UI widget.
         """
-        row = 0
-        col = 0
+        my_font = tkFont.Font(family='Courier', size=10)
         
-        # CAT rig label.
-        self.set_rig_name(self.RIG_NONE)
-        lbl = tk.Label(self.frame, 
-            textvariable=self.rig_label_text,
-            font=tkFont.Font(size=10))
-        lbl.grid(
-            row=row, 
-            column=col,
-            sticky='W',
-            padx=self.PADX,
-            pady=self.PADY)
-        col += 1
+        self.frame = tk.Text(self.parent,
+            height = int(2.4 * globals.NUM_PRESETS),
+            width = 64,
+            font = my_font)
         
-        # CAT communication status label.
-        self.set_comm_status(False)
-        lbl = tk.Label(self.frame, 
-            textvariable=self.comm_status_text,
-            font=tkFont.Font(size=10))
-        lbl.grid(
-            row=row, 
-            column=col,
-            sticky='EW',
-            padx=self.PADX,
-            pady=self.PADY)
-        col += 1
-
-        # Enable/disable checkbox.
-        ckbx = tk.Checkbutton(self.frame, 
-            text='Enable',
-            variable=self.cat_enable,
-            command=self._enable_ckbx_handler,
-            onvalue = 1, 
-            offvalue = 0,
-            font=tkFont.Font(size=10))
-        ckbx.grid(
-            row=row,
-            column=col,
-            sticky='E',
-            padx=self.PADX,
-            pady=self.PADY)
-        col+= 1
-        
-        self.cat_enable.set(0)
-        self._enable_ckbx_handler()
+        self.init_title()
 
 
 ##############################################################################
 # Main program.
 ############################################################################## 
 if __name__ == "__main__":
-    print('WidgetCatControl main program not implemented.')
+
+    sat_name = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    now = ephem.Date(datetime.utcnow())
+    el = ephem.degrees(89.9)
+    
+    globals.init()
+    root = tk.Tk()
+    root.title('WidgetPassWindow test application')
+    pw = WidgetPassWindow(root)
+    pw.frame.pack()
+    
+    for i in range(1, 15, 2):
+        name = sat_name[:i]
+        pw.add_pass_info(name, now, el, now)
+    
+    root.mainloop()
    

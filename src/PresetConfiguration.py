@@ -45,8 +45,8 @@
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from ConfigFile import ConfigFile
+from src.pySatCatUtils import *
+from src.ConfigFile import ConfigFile
 
 
 ##############################################################################

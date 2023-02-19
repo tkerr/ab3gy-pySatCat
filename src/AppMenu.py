@@ -1,9 +1,9 @@
 ###############################################################################
-# WindowOrbitMap.py
+# AppMenu.py
 # Author: Tom Kerr AB3GY
 #
-# WindowOrbitMap class for use with the pySatCat application.
-# Implements a window for displaying the satellite orbit map.
+# AppMenu class for use with the pySatCat application.
+# Implements the application menu and associated dialog boxes.
 #
 # Designed for personal use by the author, but available to anyone under the
 # license terms below.
@@ -41,17 +41,21 @@
 ###############################################################################
 
 # System level packages.
-import os
-import re
 import sys
 
 # Tkinter packages.
 import tkinter as tk
+from tkinter import ttk
+from tkinter import Menu, filedialog
+from tkinter.messagebox import showinfo, showwarning, askyesnocancel
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from WidgetMapPlot import WidgetMapPlot
+from src.pySatCatUtils import *
+from src.DlgConfigCat import DlgConfigCat
+from src.DlgConfigObserver import DlgConfigObserver
+from src.DlgConfigTLE import DlgConfigTLE
+
 
 ##############################################################################
 # Globals.
@@ -62,57 +66,105 @@ from WidgetMapPlot import WidgetMapPlot
 # Functions.
 ##############################################################################
 
+# ------------------------------------------------------------------------
+def about_msg():
+    """
+    Display a Help -> About message box.
+    """
+    msg = globals.APP_NAME + ' Version ' + globals.APP_VERSION + '\n'
+    msg += 'Transceiver control for satellite operation\n'
+    msg += '(c) ' + globals.APP_COPYRIGHT + ' by Tom Kerr AB3GY\n'
+    msg += 'ab3gy@arrl.net'
+    
+    showinfo(
+        title='About ' + globals.APP_NAME,
+        message=msg)
+
 
 ##############################################################################
-# WindowOrbitMap class.
+# AppMenu class.
 ##############################################################################
-class WindowOrbitMap(object):
-    """
-    WindowOrbitMap class for use with the pySatCat application.
-    Implements a window for displaying the satellite orbit map.
-    """
+class AppMenu(object):
 
     # ------------------------------------------------------------------------
     def __init__(self, root):
         """
         Class constructor.
-    
+        
         Parameters
         ----------
         root : Tk object
-            The pySatCat application root window.
-        
+            The potalog application root window.
+
         Returns
         -------
         None.
         """
-        self.root = root  # The root window
-        self.frame = tk.Toplevel(self.root)
-        self.map = None  # The WidgetMapPlot object
-        self._window_init()
+        self.root = root
+        
+        # The application menu.
+        self.menubar = Menu(root)
+        root.config(menu=self.menubar)
+        self._menu_init()
 
     # ------------------------------------------------------------------------
-    def _window_init(self):
+    def _menu_init(self):
         """
-        Internal method to create and initialize the window.
+        Internal method to create and initialize the menu.
         """
-        self.frame.title('Satellite Orbit Map')
-        self.map = WidgetMapPlot(self.frame)
-        self.map.frame.grid(row=0, column=0, padx=3, pady=3)
-        self.frame.protocol("WM_DELETE_WINDOW", lambda: self._window_close())
-        set_geometry(self.frame)
+        
+        # Config menu.
+        config_menu = Menu(self.menubar, tearoff=False)
+        config_menu.add_command(
+            label='Observer...',
+            command=self._dlg_observer)
+        config_menu.add_command(
+            label='CAT Interface...',
+            command=self._dlg_cat)
+        config_menu.add_command(
+            label='TLE Source...',
+            command=self._dlg_tle)
+        self.menubar.add_cascade(
+            label='Config',
+            menu=config_menu)
+
+        # Help menu.
+        help_menu = Menu(self.menubar, tearoff=False)
+        help_menu.add_command(
+            label='About',
+            command=about_msg)
+        self.menubar.add_cascade(
+            label='Help',
+            menu=help_menu)
 
     # ------------------------------------------------------------------------
-    def _window_close(self):
+    def _dlg_cat(self):
         """
-        Close the window.
+        CAT dialog box for managing the Computer Aided Transceiver (CAT) interface.
         """
-        globals.window_orbit_map = None
-        self.frame.destroy()
+        dlg = DlgConfigCat(self.root)
+        pass
+
+    # ------------------------------------------------------------------------
+    def _dlg_observer(self):
+        """
+        Observer dialog box for entering location info.
+        """
+        dlg = DlgConfigObserver(self.root)
+
+    # ------------------------------------------------------------------------
+    def _dlg_tle(self):
+        """
+        TLE dialog box for configuring Two Line Element (TLE) data sources.
+        """
+        dlg = DlgConfigTLE(self.root)
 
 
 ##############################################################################
 # Main program.
 ############################################################################## 
 if __name__ == "__main__":
-    print('WindowOrbitMap main program not implemented.')
+    
+    print('AppMenu test program not implemented.')
+
+   

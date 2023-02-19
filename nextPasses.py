@@ -51,8 +51,8 @@ from datetime import datetime
 import _env_init
 
 # Local packages.
-from ConfigFile import ConfigFile
-from SatelliteTracker import SatelliteTracker
+from src.ConfigFile import ConfigFile
+from src.SatelliteTracker import SatelliteTracker
 
 
 ##############################################################################

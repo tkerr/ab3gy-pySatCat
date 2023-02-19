@@ -51,8 +51,8 @@ from tkinter import ttk
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from RigCat import update_rig_cat
+from src.pySatCatUtils import *
+from src.RigCat import update_rig_cat
 
 
 ##############################################################################

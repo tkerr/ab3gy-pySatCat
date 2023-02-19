@@ -48,9 +48,9 @@ import _env_init
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from ConfigFile import ConfigFile
-from WidgetCatControl import WidgetCatControl
+from src.pySatCatUtils import *
+from src.ConfigFile import ConfigFile
+from src.WidgetCatControl import WidgetCatControl
 
 # All the PyRigCat classes.
 from PyRigCat.PyRigCat import *

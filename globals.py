@@ -46,9 +46,9 @@ import time
 import tkinter as tk
 
 # Local packages.
-from ConfigFile import ConfigFile
-from CatControlThread import stop_cat_control_thread
-from TrackerThread import stop_tracker_thread
+from src.ConfigFile import ConfigFile
+from src.CatControlThread import stop_cat_control_thread
+from src.TrackerThread import stop_tracker_thread
 
 ##############################################################################
 # Globals.

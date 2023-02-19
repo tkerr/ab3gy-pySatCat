@@ -53,22 +53,22 @@ import _env_init
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from AppMenu import AppMenu
-from CatControlThread import start_cat_control_thread
-from ConfigFile import ConfigFile
-from RigCat import update_rig_cat
-from SatelliteTracker import SatelliteTracker
-from TrackerThread import start_tracker_thread
-from WidgetDesiredFrequency import WidgetDesiredFrequency
-from WidgetCorrectedFrequency import WidgetCorrectedFrequency
-from WidgetAzElRange import WidgetAzElRange
-from WidgetSatInfo import WidgetSatInfo
-from WidgetCatControl import WidgetCatControl
-from WidgetPresetButton import WidgetPresetButton
-from WidgetPassWindow import WidgetPassWindow
-from WidgetCountdown import WidgetCountdown
-from WidgetClock import WidgetClock
+from src.pySatCatUtils import *
+from src.AppMenu import AppMenu
+from src.CatControlThread import start_cat_control_thread
+from src.ConfigFile import ConfigFile
+from src.RigCat import update_rig_cat
+from src.SatelliteTracker import SatelliteTracker
+from src.TrackerThread import start_tracker_thread
+from src.WidgetDesiredFrequency import WidgetDesiredFrequency
+from src.WidgetCorrectedFrequency import WidgetCorrectedFrequency
+from src.WidgetAzElRange import WidgetAzElRange
+from src.WidgetSatInfo import WidgetSatInfo
+from src.WidgetCatControl import WidgetCatControl
+from src.WidgetPresetButton import WidgetPresetButton
+from src.WidgetPassWindow import WidgetPassWindow
+from src.WidgetCountdown import WidgetCountdown
+from src.WidgetClock import WidgetClock
 
 
 ##############################################################################

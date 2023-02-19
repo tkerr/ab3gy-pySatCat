@@ -57,8 +57,8 @@ from tkinter.messagebox import showinfo
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from SatelliteTracker import SatelliteTracker
+from src.pySatCatUtils import *
+from src.SatelliteTracker import SatelliteTracker
 
 ##############################################################################
 # Globals.

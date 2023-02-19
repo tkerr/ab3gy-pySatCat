@@ -50,11 +50,11 @@ from tkinter import ttk
 
 # Local packages.
 import globals
-from pySatCatUtils import *
-from DlgConfigPreset import DlgConfigPreset
-from PresetConfiguration import PresetConfiguration
-from RigCat import on_preset_change
-from SatelliteTracker import SatelliteTracker
+from src.pySatCatUtils import *
+from src.DlgConfigPreset import DlgConfigPreset
+from src.PresetConfiguration import PresetConfiguration
+from src.RigCat import on_preset_change
+from src.SatelliteTracker import SatelliteTracker
 
 
 ##############################################################################

@@ -49,7 +49,7 @@ import tkinter.messagebox as messagebox
 
 # Local packages.
 import globals
-from SatelliteTracker import SatelliteTracker
+from src.SatelliteTracker import SatelliteTracker
 
 
 ##############################################################################

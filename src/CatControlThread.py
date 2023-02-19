@@ -50,7 +50,7 @@ import _env_init
 
 # Local packages.
 import globals
-from RigCat import *
+from src.RigCat import *
 
 
 ##############################################################################
