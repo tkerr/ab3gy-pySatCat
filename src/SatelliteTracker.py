@@ -161,6 +161,8 @@ class SatelliteTracker(object):
             with open(self.tle_filename, 'r') as file:
                 for line in file:
                     line_new = line.strip().upper()
+                    if line_new.startswith('0'):  # 3le format
+                        line_new = line_new[2:]
                     if (len(line_new) > 0):
                         # Shift the file lines.
                         sat_name = line1
@@ -220,6 +222,8 @@ class SatelliteTracker(object):
             with open(filename, 'r') as file:
                 for line in file:
                     line_new = line.strip().upper()
+                    if line_new.startswith('0'):  # 3le format
+                        line_new = line_new[2:]
                     if (len(line_new) > 0):
                         # Shift the file lines.
                         name = line1
@@ -256,9 +260,12 @@ class SatelliteTracker(object):
                 el = math.degrees(self.model.alt)
                 range = self.model.range / 1000.0
                 velocity = self.model.range_velocity
-                x1 = math.tan(self.model.sublat)
-                x2 = math.atan(self.FLATTEN * x1)
-                lat = math.degrees(x2)
+                # Comparison to N2YO.com and other models indicates that flattening
+                # is already taken into account in the computation.
+                #x1 = math.tan(self.model.sublat)
+                #x2 = math.atan(self.FLATTEN * x1)
+                #lat = math.degrees(x2)
+                lat = math.degrees(self.model.sublat)
                 lon = math.degrees(self.model.sublong)
                 sun = 1
                 if self.model.eclipsed: sun = 0

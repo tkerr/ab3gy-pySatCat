@@ -90,7 +90,7 @@ class WidgetPassWindow(object):
         self.frame = None
         
         self.PAD = '  '  # Column spacing pad
-        self.SWIDTH = 10 # Satellite name max width
+        self.SWIDTH = 12 # Satellite name max width
         self.DWIDTH = 10 # Date column width
         self.TWIDTH = 8  # Time column width
         self.EWIDTH = 6  # Max elevation column width
