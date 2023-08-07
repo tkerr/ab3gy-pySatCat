@@ -52,20 +52,12 @@ from tkinter import ttk
 # Local packages.
 import globals
 from src.pySatCatUtils import *
-from src.RigCat import update_rig_cat
+from src.RigCat import update_rig_cat, RIG_LIST
 
 
 ##############################################################################
 # Globals.
 ##############################################################################
-
-# The list of supported transceivers.
-rig_list = (
-    'NONE',
-    'FT-817',
-    'FT-991',
-    'IC-7000',
-    )
 
 # The list of selectable baud rates.
 baud_list = (
@@ -156,7 +148,6 @@ class DlgConfigCat(object):
         """
         Internal method to create and initialize the dialog box.
         """
-        global rig_list
         global baud_list
         global data_list
         global parity_list
@@ -173,7 +164,7 @@ class DlgConfigCat(object):
         # Get existing config settings.
         rig = str(globals.config.get(self.section, 'RIG'))
         if (len(rig) > 0): self.rig_text.set(rig)
-        else: self.rig_text.set(rig_list[0])
+        else: self.rig_text.set(RIG_LIST[0])
         
         port = str(globals.config.get(self.section, 'PORT'))
         if (len(port) > 0): self.port_text.set(port)
@@ -224,7 +215,7 @@ class DlgConfigCat(object):
         mnu_rig = tk.OptionMenu(
             self.dlg_config_cat,
             self.rig_text,
-            *rig_list)
+            *RIG_LIST)
         mnu_rig.config(width=10)
         mnu_rig.grid(row=row, column=1, padx=6, pady=3, sticky='W')
         row += 1
