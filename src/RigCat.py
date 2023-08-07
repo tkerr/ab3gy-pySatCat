@@ -79,12 +79,7 @@ CTCSS_TONES = {
     '233.6':'2336', '241.8':'2418', '250.3':'2503', '254.1':'2541'}
 
 # The list of supported transceivers.
-RIG_LIST = (
-    RigName.NONE,
-    RigName.FT817,
-    RigName.FT991,
-    RigName.IC7000,
-    )
+RIG_LIST = RigName.RIG_LIST[1:]  # Assumes index 0 == NONE
 
 ##############################################################################
 # Functions.
@@ -139,11 +134,11 @@ def init_cat_control(rig, port, baud, data, parity, stop):
     #print(rig, port, baud, data, parity, stop)
     
     # Select the specified rig CAT object.
-    if (rig == 'FT-817'):
+    if (rig == RigName.FT817):
         globals.rig_cat = PyRigCat_ft817()
-    elif (rig == 'FT-991'):
+    elif (rig == RigName.FT991):
         globals.rig_cat = PyRigCat_ft991()
-    elif (rig == 'IC-7000'):
+    elif (rig == RigName.IC7000):
         globals.rig_cat = PyRigCat_ic7000()
     else:
         print ('Rig: ' + rig + ' not supported.')
